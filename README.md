@@ -1,5 +1,8 @@
-A Django Rest Framework project to demonstrate custom user model implementation with login, register and some custom permissions.
-In this project i have replaced username field to email for authentication by extending AbstractBaseUser and BaseUserManager.
+**Setting up a new environment**
+
+python3 -m venv env
+source env/bin/activate
+
 
 **Requirements**
 
