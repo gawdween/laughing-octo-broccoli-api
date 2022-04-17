@@ -1,18 +1,22 @@
-A Django Rest Framework project to demonstrate custom user model implementation with login, register and some custom permissions.
-In this project i have replaced username field to email for authentication by extending AbstractBaseUser and BaseUserManager.
+**Setting up a new environment**
 
-Requirements
+python3 -m venv env
+source env/bin/activate
+
+
+**Requirements**
+
 open requirements.txt file to see requirements
 
 To install requirements type
-
 pip install -r requirements.txt
-Installing
+
+**Installing**
+
 open terminal and type
+git clone the repo or simply download using the url 
 
-git clone the repo or simply download using the url below
-
-To migrate the database open terminal in project directory and type
+**To migrate the database open terminal in project directory and type**
 
 python manage.py makemigrations
 python manage.py migrate
