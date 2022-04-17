@@ -45,6 +45,18 @@ class CustomerProfileSerializer(serializers.ModelSerializer):
         model = CustomerProfile
         fields = '__all__'
 
+    def update(self, instance, validated_data):
+        if 'first_name' in validated_data:
+            instance.first_name = validated_data['first_name']
+        if 'last_name' in validated_data:
+            instance.last_name = validated_data['last_name']
+        if 'address' in validated_data:
+            instance.street_address = validated_data['address']
+        if 'image' in validated_data:
+            instance.image = validated_data['image']
+        instance.save()
+        return instance
+
 
 class CustomerTransactionSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
