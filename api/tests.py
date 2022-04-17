@@ -5,6 +5,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from api.models import CustomerProfile
+
 
 class UserManagerTest(TestCase):
     def create_test(self, email, password):
@@ -27,7 +29,7 @@ class UserManagerTest(TestCase):
         self.assertEqual(test.email, 'test@example.com')
         self.assertEqual(test.first_name, '')
         self.assertEqual(test.last_name, '')
-        self.assertEqual(test.phone_number, '0244854227')
+        self.assertEqual(test.phone_number)
         self.assertTrue(test.is_active)
         self.assertFalse(test.is_staff)
         self.assertFalse(test.is_activated)
@@ -107,3 +109,16 @@ class RegistrationAPITest(APITestCase):
             "error": "User with this email already exist"
         }
         self.assertEqual(response.data, expected_data)
+
+class TestUserInfoModel(TestCase):
+    # general user object for the test
+    def set_case(self, email, password):
+        user = get_user_model().objects.create_user(
+            email=email,
+            password=password
+        )
+        return user
+
+    def test_user_info_creation(self):
+        self.set_case('user@bot.com', '12345678')
+        self.assertIsNotNone(CustomerProfile.user)
