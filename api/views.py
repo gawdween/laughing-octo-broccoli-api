@@ -10,12 +10,16 @@ from knox.auth import TokenAuthentication
 from api.models import User, CustomerTransaction, CustomerProfile
 from api.serializers import UserSerializer, RegisterSerializer, StaffUserSerializer, CustomerTransactionSerializer
 from api.permissions import IsOwnerOrReadOnly
+from api.serializers import CustomerProfileSerializer
 
 
 
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
+    """
+    Create a new user
+    """
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
@@ -29,6 +33,9 @@ class RegisterAPI(generics.GenericAPIView):
 
 
 class CreateStaffUserAPI(generics.GenericAPIView):
+    """
+    Creating staff user
+    """
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
@@ -42,6 +49,9 @@ class CreateStaffUserAPI(generics.GenericAPIView):
 
 
 class LoginAPI(KnoxLoginView):
+    """
+    customer/user login
+    """
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
@@ -53,18 +63,43 @@ class LoginAPI(KnoxLoginView):
 
 
 class UserList(generics.ListAPIView):
+    """
+    List all customers
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    List, update and delete a customer
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly]
+    authentication_classes = (TokenAuthentication,)
 
+
+class ChangeCustomerProfile(generics.UpdateAPIView):
+    """
+    An endpoint for updating user profile.
+    """
+    queryset = CustomerProfile.objects
+    serializer_class = CustomerProfileSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
+    authentication_classes = (TokenAuthentication,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        user = CustomerProfile.objects.get(user=obj)
+        return user
 
 class CustomerTransactionList(generics.ListCreateAPIView):
+    """
+    Create a transaction and List all transactions by a customer
+    """
     queryset = CustomerTransaction.objects.all()
     serializer_class = CustomerTransactionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -78,6 +113,9 @@ class CustomerTransactionList(generics.ListCreateAPIView):
     
 
 class CustomerTransactionDetail(generics.RetrieveAPIView):
+    """
+    List a transaction using it's id
+    """
     queryset = CustomerTransaction.objects.all()
     serializer_class = CustomerTransactionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,

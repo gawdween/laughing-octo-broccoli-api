@@ -4,7 +4,7 @@ from .views import (RegisterAPI, LoginAPI,
                      CreateStaffUserAPI,
                     CustomerTransactionList,
                     CustomerTransactionDetail,
-                    OwnTransactions)
+                    OwnTransactions, ChangeCustomerProfile)
 from knox import views as knox_views
 
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
     path('users/', UserList.as_view()),
     path('delete_update_user/<int:pk>/', UserDetail.as_view()),
+    path('update', ChangeCustomerProfile.as_view(), name='change_customer_profile_details'),
     path('transactions/', CustomerTransactionList.as_view(), name='get_list_of_all_transactions'),
     path('transaction/<int:pk>/', CustomerTransactionDetail.as_view(), name='get_a_transaction_detail'),
     path('own_products/',OwnTransactions.as_view(), name='Owntransactions'
